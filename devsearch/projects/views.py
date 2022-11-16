@@ -22,8 +22,12 @@ projectsList = [
 def projects(request):
     msg = 'Thanh is a talented programmer.'
     number = 11
-    context = {'message': msg, 'number': number}
+    context = {'message': msg, 'number': number, 'projects': projectsList }
     return render(request, 'projects/projects.html', context)
 
 def project(request, pk):
-    return render(request, 'projects/single_project.html')
+    projectObj = None
+    for x in projectsList:
+        if x['id'] == pk:
+            projectObj = x
+    return render(request, 'projects/single_project.html', projectObj)
