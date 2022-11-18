@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Project
 
 projectsList = [
     {
@@ -20,14 +21,12 @@ projectsList = [
 
 
 def projects(request):
-    msg = 'Thanh is a talented programmer.'
-    number = 11
-    context = {'message': msg, 'number': number, 'projects': projectsList }
+    projects = Project.objects.all()
+    context = {'projects': projects }
     return render(request, 'projects/projects.html', context)
 
 def project(request, pk):
-    projectObj = None
-    for x in projectsList:
-        if x['id'] == pk:
-            projectObj = x
-    return render(request, 'projects/single_project.html', projectObj)
+    projectObj = Project.objects.get(id=pk)
+    context2 = {'project': projectObj}
+    print({'project': projectObj})
+    return render(request, 'projects/single_project.html', context2)

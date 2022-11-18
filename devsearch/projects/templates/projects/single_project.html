@@ -10,10 +10,11 @@
     {% extends 'main.html' %}
 
     {% block content %}
-
-    <h1>Single Project</h1>
-    <h2>My project is: {{ title }}</h2>
-    <p>{{ description }}</p>
+    <h1>Project: {{project.title}}</h1>
+    {% for tag in project.tags.all %}
+    <span style="border:1px solid red">{{ tag }}</span>
+    {% endfor %}
+    <p>{{ project.description }}</p>
     {% endblock content %}
 </body>
 </html>
