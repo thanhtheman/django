@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Home</title>
     </head>
     <body>
         {% extends 'main.html' %}
@@ -18,14 +18,16 @@
                 <th>Votes</th>
                 <th>View</th>
                 <th>Edit</th>
+                <th>Delete</th>
             </tr>
             {% for project in projects %}
             <tr>
                 <td>{{project.title}}</td>
                 <td>{{project.vote_ratio}}%</td>
                 <td>{{project.vote_total}}</td>
-                <td><a href= "{% url 'project' project.id %}">Link</a></td>
-                <td><a href= "{% url 'update-project' project.id %}">Link</a></td>
+                <td><a href= "{% url 'project' project.id %}">View</a></td>
+                <td><a href= "{% url 'update-project' project.id %}">Edit</a></td>
+                <td><a href= "{% url 'delete-project' project.id %}">Delete</a></td>
             </tr>
             {% endfor %}
         </table>
