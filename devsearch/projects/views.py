@@ -1,24 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Project
-
-projectsList = [
-    {
-        'id': '1',
-        'title': 'Work Flow Automation',
-        'description': 'Real-world project at Peoples Group'
-    },
-    {
-        'id': '2',
-        'title': 'Django',
-        'description': 'Something useful for me to use'
-    },
-    {
-        'id': '3',
-        'title': 'API Integration on Upwork',
-        'description': 'Making some real $$$ with my programming skills'
-    }
-]
-
+from .forms import ProjectForm
 
 def projects(request):
     projects = Project.objects.all()
@@ -27,6 +9,29 @@ def projects(request):
 
 def project(request, pk):
     projectObj = Project.objects.get(id=pk)
-    context2 = {'project': projectObj}
+    context = {'project': projectObj}
     print({'project': projectObj})
-    return render(request, 'projects/single_project.html', context2)
+    return render(request, 'projects/single_project.html', context)
+
+def create_project(request):
+    form = ProjectForm()
+    if request.method == 'POST':
+        print(request.POST)
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('projects')
+    context = {'form': form}
+    return render(request, 'projects/project_form.html', context)
+
+def update_project(request, pk):
+    project = Project.objects.get(id=pk)
+    form = ProjectForm(instance=project)
+    if request.method == 'POST':
+        print(request.POST)
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('projects')
+    context = {'form': form}
+    return render(request, 'projects/project_form.html', context)

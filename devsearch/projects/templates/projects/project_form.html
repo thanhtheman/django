@@ -7,8 +7,17 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Logo</h1>
-    <a href="{% url 'create-project' %}">Add Project</a>
-    <hr>
+    {% extends 'main.html' %}
+        
+    {% block content %}
+    <h1>Project Form</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit">
+    </form>
+    {% endblock content %}
+    
 </body>
 </html>
