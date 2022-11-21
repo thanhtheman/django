@@ -11,6 +11,8 @@
 
     {% block content %}
     <h1>Project: {{project.title}}</h1>
+    <img style="max-width: 500px" src="{{ project.featured_image.url }}" alt="project image">
+    <br>
     {% for tag in project.tags.all %}
     <span style="border:1px solid red">{{ tag }}</span>
     {% endfor %}
