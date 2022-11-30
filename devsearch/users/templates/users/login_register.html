@@ -9,14 +9,25 @@
 <body>
     {% extends 'main.html' %}
     {% block content %}
-    
+    {% if page == 'register' %}
+    <h1>Register Now</h1>
+    <form action="{% url 'register' %}", method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit", value="register">
+    </form>
+    <p>Don't have an account with us? <a href="{% url 'login' %}">Login</a></p>
+    {% else %}
     <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
         <input type="text" name="username" placeholder="username">
         <input type="password" name="password" placeholder="password">
         <input type="submit" value="login">
-
     </form>
+    
+    <p>Don't have an account with us? <a href="{% url 'register' %}">Sign Up</a></p>
+
+    {% endif %}
 
     {% endblock content%}
 </body>
