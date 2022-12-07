@@ -36,6 +36,10 @@
           <div class="form__field">
             <label for="formInput#text"> {{ field.label }} </label>
             {{ field }}
+
+            {% for error in field.errors %}
+            <p style="color: red;">{{ error }}</p>
+            {% endfor %}
           </div>
           {% endfor %}
 
@@ -73,7 +77,6 @@
                 id="formInput#text"
                 type="text"
                 name="username"
-                placeholder="Enter your username..."
               />
             </div>
   
@@ -85,7 +88,6 @@
                 id="formInput#passowrd"
                 type="password"
                 name="password"
-                placeholder="••••••••"
               />
             </div>
             <div class="auth__actions">

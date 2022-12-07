@@ -5,6 +5,7 @@ from .models import Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -59,3 +60,10 @@ def register_user(request):
             messages.error(request, "An error has occured, please check username & password requirements.")
     context ={'page': page, 'form': form}
     return render(request, 'users/login_register.html', context)
+
+@login_required(login_url='login')
+def user_account(request):
+    profile = request.user.profile
+    projects = profile.project_set.all()
+    context = {'profile': profile, 'projects': projects}
+    return render(request, 'users/account.html', context)
