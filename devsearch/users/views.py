@@ -7,17 +7,12 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-import json
+from .utils import search_profiles
+
 
 # Create your views here.
 def profiles(request):
-    search_query = ''
-    if request.GET.get('search_query'):
-        search_query = request.GET.get('search_query')
-    skills = Skill.objects.filter(Q(name__icontains=search_query))
-    profiles = Profile.objects.distinct().filter(Q(name__icontains=search_query) | 
-    Q(short_intro__icontains=search_query) |
-    Q(skills__in=skills))
+    profiles, search_query = search_profiles(request)
     context = {'profiles': profiles, 'search_query': search_query}
     return render(request, 'users/profiles.html', context)
 
