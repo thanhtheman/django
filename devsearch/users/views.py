@@ -4,7 +4,7 @@ from .models import Profile
 # from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -55,7 +55,7 @@ def register_user(request):
             user.save()
             messages.success(request, 'Your account has been successfully created!')
             login(request, user)
-            return redirect('profiles')
+            return redirect('edit-account')
         else:
             messages.error(request, "An error has occured, please check username & password requirements.")
     context ={'page': page, 'form': form}
@@ -67,3 +67,16 @@ def user_account(request):
     projects = profile.project_set.all()
     context = {'profile': profile, 'projects': projects}
     return render(request, 'users/account.html', context)
+
+@login_required(login_url='login')
+def edit_account(request):
+    profile = request.user.profile
+    form = ProfileForm(instance=profile)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance =profile)
+        if form.is_valid():
+            form.save()
+            return redirect('account')
+    context = {'form': form}
+    return render(request, 'users/profile_form.html', context)
