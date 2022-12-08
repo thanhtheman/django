@@ -1,17 +1,24 @@
 from django.shortcuts import render, redirect
-from .models import Profile
+from .models import Profile, Skill
 # from projects.models import Project
 # from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm, ProfileForm
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Q
+import json
 
 # Create your views here.
 def profiles(request):
-    profiles = Profile.objects.all()
-    context = {'profiles': profiles}
+    search_query = ''
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+    skills = Skill.objects.filter(Q(name__icontains=search_query))
+    profiles = Profile.objects.distinct().filter(Q(name__icontains=search_query) | 
+    Q(short_intro__icontains=search_query) |
+    Q(skills__in=skills))
+    context = {'profiles': profiles, 'search_query': search_query}
     return render(request, 'users/profiles.html', context)
 
 def user_profile(request, pk):
